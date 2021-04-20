@@ -163,3 +163,6 @@ Thumbs.db
 *.box
 db.sqlite3
 # End of https://www.toptal.com/developers/gitignore/api/python,vagrant
+profiles_api/__pycache__
+profiles_api/migrations/__pycache__
+profiles_project/__pycache__
