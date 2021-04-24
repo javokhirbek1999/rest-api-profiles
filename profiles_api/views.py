@@ -15,3 +15,31 @@ class HelloApiView(APIView):
         ]    
 
         return Response({'message': 'Hello!', 'an_apiview': an_apiview,})
+
+class MoviesList(APIView):
+
+    
+    def get(self,request,format=None):
+        """Returns the list of movies as an API"""
+        movies = [
+            {
+                'name': 'Jobs',
+                'year': 2016,
+                'country': 'USA',
+            },
+            {
+                'name': 'Silicon Valley',
+                'year': 2014,
+                'country': 'USA',
+            },
+            {
+                'name': 'Born',
+                'year': 2012,
+                'country': 'USA',
+            },
+            
+        ]
+
+        return Response(movies)
+
+    
