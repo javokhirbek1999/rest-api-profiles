@@ -42,3 +42,37 @@ class HelloApiView(APIView):
     def delete(self,request,pk=None):
         """Delete an object"""
         return Response({'method':'DELETE'})    
+
+class PopulationData(APIView):
+    """Test API View"""
+    serializer_class = serializers.PopulationSerializer
+
+    def get(self,request,format=None):
+        welcome = ["Welcome"]
+        return Response({'message':welcome})
+    
+    def post(self,request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            country = serializer.validated_data.get('country')
+            population = serializer.validated_data.get('population')
+            year = serializer.validated_data.get('year')
+            stats = {'Country': country,
+                    'Population': population,
+                    'Year': year}
+            return Response({'data':stats})
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self,request,pk=None):
+        return Response({'message':'PUT'})
+    
+    def patch(self,request,pk=None):
+        return Response({'message':'PATCH'})
+    
+    def delete(self,request,pk=None):
+        return Response({'message':'DELETE'})
+
+
+
