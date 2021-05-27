@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
 
 from profiles_api import serializers
 from profiles_api import models
@@ -282,6 +284,15 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name','email',)
 
+
+class UserLoginView(ObtainAuthToken):
+    """Handle creating user authentication tokens"""
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+class UserAuthView(ObtainAuthToken):
+    """Handles generating random authentication tokens"""
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 class UserProfViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfSerializer

@@ -13,6 +13,8 @@ router.register('users',views.UserProfViewSet)
 
 urlpatterns = [
     path('hello-views/',views.HelloApiView.as_view()),
+    path('login/',views.UserLoginView.as_view()),
+    path('singin/',views.UserAuthView.as_view()),
     path('', include(router.urls)),
     path('population/',views.PopulationData.as_view()),
     path('jobs/',views.Job.as_view()),
