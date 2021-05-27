@@ -1,3 +1,5 @@
+from re import search
+from rest_framework import views
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -204,6 +206,72 @@ class DemoViewSet(viewsets.ViewSet):
     
     def delete(self,request,pk=None):
         return Response({'http_method':'DELETE'})
+    
+class CountriesData(viewsets.ViewSet):
+    serializer_class = serializers.Counties
+
+    def create(self,request,pk=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name');
+            capital = serializer.validated_data.get('capital');
+            population = serializer.validated_data.get('population');
+            gdp = serializer.validated_data.get('gdp')
+            message = {
+                'Title': name,
+                'Capital':capital,
+                'Population':population,
+                'gdp':gdp
+            }
+            return Response(message)
+        else:
+            return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+
+    def retrieve(self,request,pk=None):
+        return Response({'message':'GET'})
+
+    def update(self,request,pk=None):
+        return Response({'message':'UPDATE'})
+    
+    def partial_update(self,request,pk=None):
+        return Response({'message':'PATCH'})
+    
+    def delete(self,request,pk=None):
+        return Response({'message':'DELETE'})
+    
+
+class Companies(viewsets.ViewSet):
+    serializer_class = serializers.Companies
+
+
+    def create(self,request,pk=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            hq_location = serializer.validated_data.get('hq_location')
+            founded = serializer.validated_data.get('founded')
+            revenue = serializer.validated_data.get('revenue')
+            message = {
+                'Comany':name,
+                'Headquaters':hq_location,
+                'Founded':founded,
+                'Revenue':revenue
+            }
+            if message['Headquaters'] == 'Please select location':
+                message.pop('Headquaters')
+            return Response(message)
+        else:
+            return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+    
+    def retrieve(self,request,pk=None):
+        return Response({'message':'GET'})
+    
+    def partial_update(self,request,pk=None):
+        return Response({'message':'PATCH'})
+    
+    def delete(self,request,pk=None):
+        return Response({'message':'DELETE'})
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     """Handles creating and updating profiles"""
@@ -211,6 +279,15 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','email',)
+
+
+class UserProfViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.UserProfSerializer
+    queryset = models.UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.CheckUpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name','email',)
 

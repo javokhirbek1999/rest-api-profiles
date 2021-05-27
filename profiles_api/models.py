@@ -5,22 +5,22 @@ from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,Permissi
 # Create your models here
 class UserProfileManager(BaseUserManager):
 
-    def create_user(self,email,name,password=None):
-
+    def create_user(self,email,name,password):
         if not email:
-            raise ValueError("Email is required")
+            return ValueError('Email is required')
         
         email = self.normalize_email(email)
-
+        
         user = self.model(email=email,name=name)
 
         user.set_password(password)
+        
         user.save(using=self._db)
 
         return user
     
     def create_superuser(self,email,name,password):
-
+        
         user = self.create_user(email,name,password)
 
         user.is_superuser = True
@@ -29,6 +29,7 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
+        
 
 class UserProfile(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(max_length=120,unique=True)
