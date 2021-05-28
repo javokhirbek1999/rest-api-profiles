@@ -10,6 +10,8 @@ router.register('profiles',views.UserProfileViewSet)
 router.register('countries',views.CountriesData,base_name='countries')
 router.register('companies',views.Companies,base_name='companies')
 router.register('users',views.UserProfViewSet)
+router.register('feed',views.UserProfileFeedViewSet)
+router.register('feeds',views.UserProfileFeedViewset)
 
 urlpatterns = [
     path('hello-views/',views.HelloApiView.as_view()),

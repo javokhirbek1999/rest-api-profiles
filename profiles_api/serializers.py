@@ -1,3 +1,4 @@
+from django.db.models import fields
 from rest_framework import serializers
 from profiles_api import models
 
@@ -76,3 +77,23 @@ class UserProfSerializer(serializers.ModelSerializer):
         return user
 
 
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    """Serilaizers profile feed items"""
+    class Meta:
+        model = models.ProfileFeedItem
+        fields = ('id','user_profile','status_text','created_on')
+        extra_kwargs = {
+            'user_profile':{
+                'read_only':True
+            }
+        }
+
+class ProfileFeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ProfileFeedItem
+        fields = ('id','user_profile','status_text','created_on')
+        extra_kwargs = {
+            'user_profile':{
+                'read_only':True
+            }
+        }
